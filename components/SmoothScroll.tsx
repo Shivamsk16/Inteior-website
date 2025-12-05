@@ -12,35 +12,31 @@ export default function SmoothScroll({ children }: { children: React.ReactNode }
     const lenis = new Lenis({
       duration: 1.2,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-      orientation: 'vertical',
-      gestureOrientation: 'vertical',
       smoothWheel: true,
       wheelMultiplier: 1,
-      smoothTouch: false,
       touchMultiplier: 2,
       infinite: false,
+      // smoothTouch removed completely
     })
 
     lenisRef.current = lenis
 
-    function raf(time: number) {
+    let frame: number
+    const raf = (time: number) => {
       lenis.raf(time)
-      requestAnimationFrame(raf)
+      frame = requestAnimationFrame(raf)
     }
-
-    requestAnimationFrame(raf)
+    frame = requestAnimationFrame(raf)
 
     return () => {
+      cancelAnimationFrame(frame)
       lenis.destroy()
     }
   }, [])
 
   useEffect(() => {
-    if (lenisRef.current) {
-      lenisRef.current.scrollTo(0, { immediate: true })
-    }
+    lenisRef.current?.scrollTo(0, { immediate: true })
   }, [pathname])
 
   return <>{children}</>
 }
-
