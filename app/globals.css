@@ -1,0 +1,111 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --color-beige: #f5f1ea;
+  --color-cream: #fdfbf7;
+  --color-gold: #e8b04a;
+  --color-brown: #a0886f;
+  --color-teal: #3a8d84;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--color-cream);
+  color: var(--color-brown);
+  overflow-x: hidden;
+}
+
+/* Smooth scrollbar styling */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-cream);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-brown);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-teal);
+}
+
+/* Selection color */
+::selection {
+  background-color: var(--color-gold);
+  color: var(--color-cream);
+}
+
+/* Custom utilities */
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+  
+  .perspective-1000 {
+    perspective: 1000px;
+  }
+  
+  .transform-style-3d {
+    transform-style: preserve-3d;
+  }
+}
+
+/* Hide default cursor on interactive elements */
+a, button, [role="button"] {
+  cursor: none;
+}
+
+/* Smooth transitions */
+* {
+  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+
+/* Dark mode styles */
+.dark {
+  --color-beige: #2a2520;
+  --color-cream: #1f1b17;
+  --color-brown: #8b7a6a;
+}
+
+.dark body {
+  background-color: var(--color-cream);
+  color: var(--color-beige);
+}
+
+.dark .bg-cream-50 {
+  background-color: var(--color-cream);
+}
+
+.dark .bg-beige-100 {
+  background-color: var(--color-beige);
+}
+
+.dark .text-brown-800 {
+  color: var(--color-beige);
+}
+
+.dark .text-brown-700 {
+  color: var(--color-brown);
+}
+
+.dark .text-brown-600 {
+  color: var(--color-brown);
+}
+
