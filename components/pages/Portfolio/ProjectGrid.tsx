@@ -1,15 +1,9 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
-import { gsap } from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import Link from 'next/link'
 import { useInView } from 'react-intersection-observer'
-
-if (typeof window !== 'undefined') {
-  gsap.registerPlugin(ScrollTrigger)
-}
 
 const projects = [
   { id: 1, title: 'Modern Minimalist', category: 'Residential', image: 'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=800' },
@@ -25,7 +19,6 @@ const projects = [
 export default function ProjectGrid() {
   const [filter, setFilter] = useState('All')
   const [filteredProjects, setFilteredProjects] = useState(projects)
-  const sectionRef = useRef<HTMLDivElement>(null)
   const { ref, inView } = useInView({ threshold: 0.1, triggerOnce: true })
 
   const categories = ['All', 'Residential', 'Commercial', 'Hospitality']
@@ -38,35 +31,15 @@ export default function ProjectGrid() {
     }
   }, [filter])
 
-  useEffect(() => {
-    if (!sectionRef.current) return
-
-    const cards = sectionRef.current.querySelectorAll('.project-card')
-    
-    cards.forEach((card, index) => {
-      gsap.from(card, {
-        opacity: 0,
-        y: 80,
-        duration: 0.8,
-        delay: index * 0.1,
-        scrollTrigger: {
-          trigger: card,
-          start: 'top 85%',
-          toggleActions: 'play none none none',
-        },
-      })
-    })
-  }, [filteredProjects])
-
   return (
     <section ref={ref} className="py-16 px-6 lg:px-8 bg-cream-50">
       <div className="max-w-7xl mx-auto">
         {/* Filter Buttons */}
         <motion.div
           className="flex flex-wrap justify-center gap-4 mb-16"
-          initial={{ opacity: 0, y: 30 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6 }}
+          initial={{ opacity: 0, y: 20 }}
+          animate={inView ? { opacity: 1, y: 0 } : { opacity: 1, y: 0 }}
+          transition={{ duration: 0.3, ease: 'easeOut' }}
         >
           {categories.map((category) => (
             <button
@@ -85,38 +58,42 @@ export default function ProjectGrid() {
         </motion.div>
 
         {/* Project Grid */}
-        <div
-          ref={sectionRef}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
-        >
-          {filteredProjects.map((project) => (
-            <Link
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {filteredProjects.map((project, index) => (
+            <motion.div
               key={project.id}
-              href={`/portfolio/${project.id}`}
-              className="project-card group relative overflow-hidden rounded-lg"
-              data-cursor-text="View"
+              initial={{ opacity: 0, y: 20 }}
+              animate={inView ? { opacity: 1, y: 0 } : { opacity: 1, y: 0 }}
+              transition={{ duration: 0.3, delay: index * 0.03, ease: 'easeOut' }}
             >
-              <div className="relative h-[400px] overflow-hidden">
-                <motion.img
-                  src={project.image}
-                  alt={project.title}
-                  className="w-full h-full object-cover"
-                  whileHover={{ scale: 1.1 }}
-                  transition={{ duration: 0.6, ease: 'easeOut' }}
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-brown-900/80 via-transparent to-transparent" />
-                <div className="absolute bottom-0 left-0 right-0 p-6 text-cream-50">
-                  <span className="text-sm text-gold-300 mb-2 block">
-                    {project.category}
-                  </span>
-                  <h3 className="text-2xl font-display">{project.title}</h3>
+              <Link
+                href={`/portfolio/${project.id}`}
+                className="group relative overflow-hidden rounded-lg block"
+                data-cursor-text="View"
+              >
+                <div className="relative h-[400px] overflow-hidden">
+                  <motion.img
+                    src={project.image}
+                    alt={project.title}
+                    className="w-full h-full object-cover"
+                    whileHover={{ scale: 1.05 }}
+                    transition={{ duration: 0.3, ease: 'easeOut' }}
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-brown-900/80 via-transparent to-transparent" />
+                  <div className="absolute bottom-0 left-0 right-0 p-6 text-cream-50">
+                    <span className="text-sm text-gold-300 mb-2 block">
+                      {project.category}
+                    </span>
+                    <h3 className="text-2xl font-display">{project.title}</h3>
+                  </div>
                 </div>
-              </div>
-            </Link>
+              </Link>
+            </motion.div>
           ))}
         </div>
       </div>
     </section>
   )
 }
+
 

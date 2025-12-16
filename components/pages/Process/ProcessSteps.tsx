@@ -1,15 +1,8 @@
 'use client'
 
-import { useEffect, useRef } from 'react'
 import { motion } from 'framer-motion'
-import { gsap } from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useInView } from 'react-intersection-observer'
 import { Search, Lightbulb, Palette, Hammer, CheckCircle } from 'lucide-react'
-
-if (typeof window !== 'undefined') {
-  gsap.registerPlugin(ScrollTrigger)
-}
 
 const steps = [
   {
@@ -45,47 +38,30 @@ const steps = [
 ]
 
 export default function ProcessSteps() {
-  const timelineRef = useRef<HTMLDivElement>(null)
   const { ref, inView } = useInView({ threshold: 0.1, triggerOnce: true })
-
-  useEffect(() => {
-    if (!timelineRef.current) return
-
-    const items = timelineRef.current.querySelectorAll('.process-step')
-    
-    items.forEach((item) => {
-      gsap.from(item, {
-        opacity: 0,
-        x: -80,
-        duration: 1,
-        scrollTrigger: {
-          trigger: item,
-          start: 'top 80%',
-          toggleActions: 'play none none none',
-        },
-      })
-    })
-  }, [])
 
   return (
     <section ref={ref} className="py-32 px-6 lg:px-8 bg-cream-50">
       <div className="max-w-5xl mx-auto">
         <motion.h2
           className="text-5xl font-display text-brown-800 mb-16 text-center"
-          initial={{ opacity: 0, y: 50 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.8 }}
+          initial={{ opacity: 0, y: 30 }}
+          animate={inView ? { opacity: 1, y: 0 } : { opacity: 1, y: 0 }}
+          transition={{ duration: 0.3, ease: 'easeOut' }}
         >
           How We Work
         </motion.h2>
 
-        <div ref={timelineRef} className="space-y-16">
+        <div className="space-y-16">
           {steps.map((step, index) => {
             const Icon = step.icon
             return (
-              <div
+              <motion.div
                 key={step.number}
-                className="process-step relative flex flex-col md:flex-row gap-8 items-start"
+                className="relative flex flex-col md:flex-row gap-8 items-start"
+                initial={{ opacity: 0, x: -30 }}
+                animate={inView ? { opacity: 1, x: 0 } : { opacity: 1, x: 0 }}
+                transition={{ duration: 0.3, delay: index * 0.05, ease: 'easeOut' }}
               >
                 <div className="flex-shrink-0">
                   <div className="relative">
@@ -105,7 +81,7 @@ export default function ProcessSteps() {
                     {step.description}
                   </p>
                 </div>
-              </div>
+              </motion.div>
             )
           })}
         </div>
@@ -113,4 +89,5 @@ export default function ProcessSteps() {
     </section>
   )
 }
+
 

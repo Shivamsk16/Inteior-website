@@ -1,14 +1,34 @@
 'use client'
 
-import { useEffect, useRef } from 'react'
 import { motion } from 'framer-motion'
-import { gsap } from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import Link from 'next/link'
 import { ArrowLeft } from 'lucide-react'
+import { useInView } from 'react-intersection-observer'
 
-if (typeof window !== 'undefined') {
-  gsap.registerPlugin(ScrollTrigger)
+function ImageGallery({ images, title }: { images: string[]; title: string }) {
+  return (
+    <div className="space-y-8">
+      {images.map((image: string, index: number) => {
+        const { ref, inView } = useInView({ threshold: 0.1, triggerOnce: true })
+        return (
+          <motion.div
+            key={index}
+            ref={ref}
+            className="relative h-[600px] md:h-[800px] overflow-hidden rounded-lg"
+            initial={{ opacity: 0, y: 20 }}
+            animate={inView ? { opacity: 1, y: 0 } : { opacity: 1, y: 0 }}
+            transition={{ duration: 0.3, delay: index * 0.05, ease: 'easeOut' }}
+          >
+            <img
+              src={image}
+              alt={`${title} - Image ${index + 1}`}
+              className="w-full h-full object-cover"
+            />
+          </motion.div>
+        )
+      })}
+    </div>
+  )
 }
 
 const projectData: Record<string, any> = {
@@ -39,24 +59,6 @@ const projectData: Record<string, any> = {
 
 export default function ProjectDetail({ projectId }: { projectId: string }) {
   const project = projectData[projectId] || projectData['1']
-  const imageRefs = useRef<(HTMLDivElement | null)[]>([])
-
-  useEffect(() => {
-    imageRefs.current.forEach((ref) => {
-      if (!ref) return
-
-      gsap.from(ref, {
-        opacity: 0,
-        y: 100,
-        duration: 1,
-        scrollTrigger: {
-          trigger: ref,
-          start: 'top 80%',
-          toggleActions: 'play none none none',
-        },
-      })
-    })
-  }, [])
 
   return (
     <main className="relative pt-24">
@@ -72,9 +74,9 @@ export default function ProjectDetail({ projectId }: { projectId: string }) {
 
         <motion.div
           className="mb-12"
-          initial={{ opacity: 0, y: 50 }}
+          initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
+          transition={{ duration: 0.3, ease: 'easeOut' }}
         >
           <span className="text-gold-500 font-semibold mb-4 block">
             {project.category}
@@ -91,23 +93,10 @@ export default function ProjectDetail({ projectId }: { projectId: string }) {
           </p>
         </motion.div>
 
-        <div className="space-y-8">
-          {project.images.map((image: string, index: number) => (
-            <div
-              key={index}
-              ref={(el) => (imageRefs.current[index] = el)}
-              className="relative h-[600px] md:h-[800px] overflow-hidden rounded-lg"
-            >
-              <img
-                src={image}
-                alt={`${project.title} - Image ${index + 1}`}
-                className="w-full h-full object-cover"
-              />
-            </div>
-          ))}
-        </div>
+        <ImageGallery images={project.images} title={project.title} />
       </div>
     </main>
   )
 }
+
 

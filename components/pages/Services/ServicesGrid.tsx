@@ -1,15 +1,8 @@
 'use client'
 
-import { useEffect, useRef } from 'react'
 import { motion } from 'framer-motion'
-import { gsap } from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useInView } from 'react-intersection-observer'
 import { Home, Building2, Palette, Ruler, Lightbulb, Wrench } from 'lucide-react'
-
-if (typeof window !== 'undefined') {
-  gsap.registerPlugin(ScrollTrigger)
-}
 
 const services = [
   {
@@ -51,42 +44,22 @@ const services = [
 ]
 
 export default function ServicesGrid() {
-  const sectionRef = useRef<HTMLDivElement>(null)
   const { ref, inView } = useInView({ threshold: 0.1, triggerOnce: true })
-
-  useEffect(() => {
-    if (!sectionRef.current) return
-
-    const cards = sectionRef.current.querySelectorAll('.service-card')
-    
-    cards.forEach((card) => {
-      gsap.from(card, {
-        opacity: 0,
-        y: 60,
-        duration: 0.8,
-        scrollTrigger: {
-          trigger: card,
-          start: 'top 85%',
-          toggleActions: 'play none none none',
-        },
-      })
-    })
-  }, [])
 
   return (
     <section ref={ref} className="py-32 px-6 lg:px-8 bg-cream-50">
       <div className="max-w-7xl mx-auto">
-        <div ref={sectionRef} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {services.map((service, index) => {
             const Icon = service.icon
             return (
               <motion.div
                 key={service.title}
-                className="service-card group p-8 bg-beige-100 rounded-lg hover:bg-beige-200 transition-all"
-                initial={{ opacity: 0 }}
-                animate={inView ? { opacity: 1 } : {}}
-                transition={{ delay: index * 0.1 }}
-                whileHover={{ y: -10, scale: 1.02 }}
+                className="group p-8 bg-beige-100 rounded-lg hover:bg-beige-200 transition-all"
+                initial={{ opacity: 0, y: 20 }}
+                animate={inView ? { opacity: 1, y: 0 } : { opacity: 1, y: 0 }}
+                transition={{ duration: 0.3, delay: index * 0.03, ease: 'easeOut' }}
+                whileHover={{ y: -5, scale: 1.01 }}
               >
                 <div className="mb-6">
                   <Icon className="w-12 h-12 text-gold-500" />
@@ -113,4 +86,5 @@ export default function ServicesGrid() {
     </section>
   )
 }
+
 

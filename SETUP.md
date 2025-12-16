@@ -79,3 +79,5 @@ Fonts are loaded in `app/layout.tsx`. You can replace them with your preferred f
 - Video in hero section uses Pexels. Replace with your own video or remove for image-only.
 - Form submission in contact page is simulated. Connect to your backend API.
 
+
+

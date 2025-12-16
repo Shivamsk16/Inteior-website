@@ -1,14 +1,7 @@
 'use client'
 
-import { useEffect, useRef } from 'react'
 import { motion } from 'framer-motion'
-import { gsap } from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useInView } from 'react-intersection-observer'
-
-if (typeof window !== 'undefined') {
-  gsap.registerPlugin(ScrollTrigger)
-}
 
 const principles = [
   {
@@ -30,36 +23,16 @@ const principles = [
 ]
 
 export default function Philosophy() {
-  const sectionRef = useRef<HTMLDivElement>(null)
-  const { ref, inView } = useInView({ threshold: 0.2, triggerOnce: true })
-
-  useEffect(() => {
-    if (!sectionRef.current) return
-
-    const items = sectionRef.current.querySelectorAll('.philosophy-item')
-    
-    items.forEach((item) => {
-      gsap.from(item, {
-        opacity: 0,
-        y: 50,
-        duration: 0.8,
-        scrollTrigger: {
-          trigger: item,
-          start: 'top 80%',
-          toggleActions: 'play none none none',
-        },
-      })
-    })
-  }, [])
+  const { ref, inView } = useInView({ threshold: 0.1, triggerOnce: true })
 
   return (
     <section ref={ref} className="py-32 px-6 lg:px-8 bg-cream-50">
       <div className="max-w-7xl mx-auto">
         <motion.div
           className="text-center mb-16"
-          initial={{ opacity: 0, y: 50 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.8 }}
+          initial={{ opacity: 0, y: 30 }}
+          animate={inView ? { opacity: 1, y: 0 } : { opacity: 1, y: 0 }}
+          transition={{ duration: 0.3, ease: 'easeOut' }}
         >
           <h2 className="text-5xl font-display text-brown-800 mb-6">
             Our Philosophy
@@ -71,14 +44,14 @@ export default function Philosophy() {
           </p>
         </motion.div>
 
-        <div ref={sectionRef} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {principles.map((principle, index) => (
             <motion.div
               key={principle.title}
-              className="philosophy-item p-8 bg-beige-100 rounded-lg"
-              initial={{ opacity: 0 }}
-              animate={inView ? { opacity: 1 } : {}}
-              transition={{ delay: index * 0.1 }}
+              className="p-8 bg-beige-100 rounded-lg"
+              initial={{ opacity: 0, y: 20 }}
+              animate={inView ? { opacity: 1, y: 0 } : { opacity: 1, y: 0 }}
+              transition={{ duration: 0.3, delay: index * 0.03, ease: 'easeOut' }}
             >
               <h3 className="text-2xl font-display text-brown-800 mb-4">
                 {principle.title}
@@ -93,4 +66,5 @@ export default function Philosophy() {
     </section>
   )
 }
+
 

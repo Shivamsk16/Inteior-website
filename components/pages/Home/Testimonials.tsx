@@ -32,9 +32,9 @@ export default function Testimonials() {
       <div className="max-w-7xl mx-auto">
         <motion.div
           className="text-center mb-16"
-          initial={{ opacity: 0, y: 50 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.8 }}
+          initial={{ opacity: 0, y: 30 }}
+          animate={inView ? { opacity: 1, y: 0 } : { opacity: 1, y: 0 }}
+          transition={{ duration: 0.3, ease: 'easeOut' }}
         >
           <h2 className="text-5xl md:text-6xl font-display mb-4">
             What Our Clients Say
@@ -46,9 +46,9 @@ export default function Testimonials() {
             <motion.div
               key={testimonial.id}
               className="p-8 bg-brown-800/50 rounded-lg"
-              initial={{ opacity: 0, y: 50 }}
-              animate={inView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.6, delay: index * 0.15 }}
+              initial={{ opacity: 0, y: 20 }}
+              animate={inView ? { opacity: 1, y: 0 } : { opacity: 1, y: 0 }}
+              transition={{ duration: 0.3, delay: index * 0.05, ease: 'easeOut' }}
             >
               <p className="text-cream-100 text-lg mb-6 leading-relaxed italic">
                 "{testimonial.quote}"
@@ -64,4 +64,5 @@ export default function Testimonials() {
     </section>
   )
 }
+
 

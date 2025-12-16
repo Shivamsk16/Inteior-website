@@ -9,14 +9,22 @@ export default function SmoothScroll({ children }: { children: React.ReactNode }
   const pathname = usePathname()
 
   useEffect(() => {
+    // Check for reduced motion preference
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    const isMobile = window.innerWidth < 768 || 'ontouchstart' in window
+    
+    // Use native scroll on mobile or if user prefers reduced motion
+    if (isMobile || prefersReducedMotion) {
+      return
+    }
+
     const lenis = new Lenis({
-      duration: 1.2,
+      duration: 0.4, // Reduced from 1.2 to 0.4 for instant feel
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       smoothWheel: true,
       wheelMultiplier: 1,
-      touchMultiplier: 2,
+      touchMultiplier: 1, // Reduced from 2
       infinite: false,
-      // smoothTouch removed completely
     })
 
     lenisRef.current = lenis

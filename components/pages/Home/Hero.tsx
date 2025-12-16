@@ -1,46 +1,51 @@
 'use client'
 
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { motion } from 'framer-motion'
-import { gsap } from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { ArrowDown } from 'lucide-react'
-
-if (typeof window !== 'undefined') {
-  gsap.registerPlugin(ScrollTrigger)
-}
 
 export default function Hero() {
   const heroRef = useRef<HTMLDivElement>(null)
-  const textRef = useRef<HTMLDivElement>(null)
   const videoRef = useRef<HTMLVideoElement>(null)
+  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false)
 
   useEffect(() => {
-    if (!textRef.current) return
-
-    const textElements = textRef.current.querySelectorAll('.hero-text')
+    // Check for reduced motion preference
+    const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)')
+    setPrefersReducedMotion(mediaQuery.matches)
     
-    gsap.from(textElements, {
-      opacity: 0,
-      y: 100,
-      duration: 1.2,
-      stagger: 0.2,
-      ease: 'power3.out',
-    })
+    const handleChange = (e: MediaQueryListEvent) => setPrefersReducedMotion(e.matches)
+    mediaQuery.addEventListener('change', handleChange)
+    return () => mediaQuery.removeEventListener('change', handleChange)
+  }, [])
 
-    // Parallax effect for video
-    if (videoRef.current) {
-      gsap.to(videoRef.current, {
-        y: -100,
-        scrollTrigger: {
-          trigger: heroRef.current,
-          start: 'top top',
-          end: 'bottom top',
-          scrub: true,
-        },
+  useEffect(() => {
+    // Subtle parallax only for hero, disabled on mobile/reduced motion
+    if (prefersReducedMotion || !videoRef.current || !heroRef.current) return
+    const isMobile = window.innerWidth < 768 || 'ontouchstart' in window
+    if (isMobile) return
+
+    let rafId: number
+    const handleScroll = () => {
+      if (!videoRef.current || !heroRef.current) return
+      const scrollY = window.scrollY
+      const maxScroll = heroRef.current.offsetHeight
+      const parallaxAmount = Math.min(scrollY * 0.3, 100) // Limit parallax
+      
+      cancelAnimationFrame(rafId)
+      rafId = requestAnimationFrame(() => {
+        if (videoRef.current) {
+          videoRef.current.style.transform = `translate3d(0, ${-parallaxAmount}px, 0)`
+        }
       })
     }
-  }, [])
+
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    return () => {
+      window.removeEventListener('scroll', handleScroll)
+      cancelAnimationFrame(rafId)
+    }
+  }, [prefersReducedMotion])
 
   return (
     <section
@@ -56,9 +61,8 @@ export default function Hero() {
           loop
           muted
           playsInline
-          className="w-full h-full object-cover"
+          className="w-full h-full object-cover will-change-transform"
           onError={(e) => {
-            // Hide video on error, show fallback image
             const target = e.target as HTMLVideoElement
             target.style.display = 'none'
           }}
@@ -69,36 +73,36 @@ export default function Hero() {
         <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=1920')] bg-cover bg-center" />
       </div>
 
-      {/* Content */}
-      <div ref={textRef} className="relative z-20 text-center px-6">
+      {/* Content - visible immediately with fast animation */}
+      <div className="relative z-20 text-center px-6">
         <motion.h1
-          className="hero-text text-6xl md:text-8xl lg:text-9xl font-display text-cream-50 mb-6"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
+          className="text-6xl md:text-8xl lg:text-9xl font-display text-cream-50 mb-6"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.3, ease: 'easeOut' }}
         >
           Transform
         </motion.h1>
         <motion.h2
-          className="hero-text text-5xl md:text-7xl lg:text-8xl font-display text-gold-300 mb-8"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.2 }}
+          className="text-5xl md:text-7xl lg:text-8xl font-display text-gold-300 mb-8"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.3, delay: 0.05, ease: 'easeOut' }}
         >
           Your Space
         </motion.h2>
         <motion.p
-          className="hero-text text-lg md:text-xl text-cream-100 max-w-2xl mx-auto mb-12"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.4 }}
+          className="text-lg md:text-xl text-cream-100 max-w-2xl mx-auto mb-12"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.3, delay: 0.1, ease: 'easeOut' }}
         >
           Luxury interior design that reflects your unique style and elevates your everyday living
         </motion.p>
         <motion.div
-          className="hero-text"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.6 }}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.3, delay: 0.15, ease: 'easeOut' }}
         >
           <button
             className="px-8 py-4 bg-gold-400 text-brown-900 font-medium rounded-full hover:bg-gold-500 transition-colors"
@@ -112,9 +116,9 @@ export default function Hero() {
       {/* Scroll Indicator */}
       <motion.div
         className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-20"
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 1, repeat: Infinity, repeatType: 'reverse', duration: 1.5 }}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.2, repeat: Infinity, repeatType: 'reverse', duration: 1 }}
       >
         <ArrowDown className="w-6 h-6 text-cream-50" />
       </motion.div>

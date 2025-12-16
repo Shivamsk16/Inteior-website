@@ -1,35 +1,11 @@
 'use client'
 
-import { useRef, useEffect } from 'react'
 import { motion } from 'framer-motion'
-import { gsap } from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import Link from 'next/link'
 import { useInView } from 'react-intersection-observer'
 
-if (typeof window !== 'undefined') {
-  gsap.registerPlugin(ScrollTrigger)
-}
-
 export default function AboutPreview() {
-  const sectionRef = useRef<HTMLDivElement>(null)
-  const imageRef = useRef<HTMLDivElement>(null)
-  const { ref, inView } = useInView({ threshold: 0.2, triggerOnce: true })
-
-  useEffect(() => {
-    if (!sectionRef.current || !imageRef.current) return
-
-    // Parallax effect for image
-    gsap.to(imageRef.current, {
-      y: -50,
-      scrollTrigger: {
-        trigger: sectionRef.current,
-        start: 'top bottom',
-        end: 'bottom top',
-        scrub: true,
-      },
-    })
-  }, [])
+  const { ref, inView } = useInView({ threshold: 0.1, triggerOnce: true })
 
   return (
     <section
@@ -39,9 +15,9 @@ export default function AboutPreview() {
       <div className="max-w-7xl mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           <motion.div
-            initial={{ opacity: 0, x: -50 }}
-            animate={inView ? { opacity: 1, x: 0 } : {}}
-            transition={{ duration: 0.8 }}
+            initial={{ opacity: 0, x: -20 }}
+            animate={inView ? { opacity: 1, x: 0 } : { opacity: 1, x: 0 }}
+            transition={{ duration: 0.3, ease: 'easeOut' }}
           >
             <h2 className="text-5xl md:text-6xl font-display text-brown-800 mb-6">
               Our Story
@@ -65,24 +41,22 @@ export default function AboutPreview() {
             </Link>
           </motion.div>
 
-          <div ref={sectionRef} className="relative">
-            <motion.div
-              ref={imageRef}
-              className="relative h-[600px] rounded-lg overflow-hidden"
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={inView ? { opacity: 1, scale: 1 } : {}}
-              transition={{ duration: 0.8, delay: 0.2 }}
-            >
-              <img
-                src="https://images.unsplash.com/photo-1556912172-45b7abe8b7e4?w=800"
-                alt="Designer at work"
-                className="w-full h-full object-cover"
-              />
-            </motion.div>
-          </div>
+          <motion.div
+            className="relative h-[600px] rounded-lg overflow-hidden"
+            initial={{ opacity: 0, scale: 0.98 }}
+            animate={inView ? { opacity: 1, scale: 1 } : { opacity: 1, scale: 1 }}
+            transition={{ duration: 0.3, delay: 0.05, ease: 'easeOut' }}
+          >
+            <img
+              src="https://images.unsplash.com/photo-1556912172-45b7abe8b7e4?w=800"
+              alt="Designer at work"
+              className="w-full h-full object-cover"
+            />
+          </motion.div>
         </div>
       </div>
     </section>
   )
 }
+
 

@@ -1,15 +1,8 @@
 'use client'
 
-import { useEffect, useRef } from 'react'
 import { motion } from 'framer-motion'
-import { gsap } from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import Link from 'next/link'
 import { useInView } from 'react-intersection-observer'
-
-if (typeof window !== 'undefined') {
-  gsap.registerPlugin(ScrollTrigger)
-}
 
 const projects = [
   {
@@ -39,37 +32,16 @@ const projects = [
 ]
 
 export default function FeaturedProjects() {
-  const sectionRef = useRef<HTMLDivElement>(null)
   const { ref, inView } = useInView({ threshold: 0.1, triggerOnce: true })
-
-  useEffect(() => {
-    if (!sectionRef.current) return
-
-    const cards = sectionRef.current.querySelectorAll('.project-card')
-    
-    cards.forEach((card, index) => {
-      gsap.from(card, {
-        opacity: 0,
-        y: 80,
-        duration: 1,
-        delay: index * 0.15,
-        scrollTrigger: {
-          trigger: card,
-          start: 'top 80%',
-          toggleActions: 'play none none none',
-        },
-      })
-    })
-  }, [])
 
   return (
     <section ref={ref} className="py-32 px-6 lg:px-8 bg-cream-50">
       <div className="max-w-7xl mx-auto">
         <motion.div
           className="text-center mb-16"
-          initial={{ opacity: 0, y: 50 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.8 }}
+          initial={{ opacity: 0, y: 30 }}
+          animate={inView ? { opacity: 1, y: 0 } : { opacity: 1, y: 0 }}
+          transition={{ duration: 0.3, ease: 'easeOut' }}
         >
           <h2 className="text-5xl md:text-6xl font-display text-brown-800 mb-4">
             Featured Projects
@@ -79,45 +51,45 @@ export default function FeaturedProjects() {
           </p>
         </motion.div>
 
-        <div
-          ref={sectionRef}
-          className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12"
-        >
-          {projects.map((project) => (
-            <Link
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">
+          {projects.map((project, index) => (
+            <motion.div
               key={project.id}
-              href={`/portfolio/${project.id}`}
-              className="project-card group relative overflow-hidden rounded-lg"
-              data-cursor-text="View Project"
+              initial={{ opacity: 0, y: 30 }}
+              animate={inView ? { opacity: 1, y: 0 } : { opacity: 1, y: 0 }}
+              transition={{ duration: 0.3, delay: index * 0.05, ease: 'easeOut' }}
             >
-              <div className="relative h-[500px] overflow-hidden">
-                <motion.img
-                  src={project.image}
-                  alt={project.title}
-                  className="w-full h-full object-cover"
-                  whileHover={{ scale: 1.1 }}
-                  transition={{ duration: 0.6, ease: 'easeOut' }}
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-brown-900/80 via-brown-900/20 to-transparent" />
-                <div className="absolute bottom-0 left-0 right-0 p-8 text-cream-50">
-                  <span className="text-sm text-gold-300 mb-2 block">
-                    {project.category}
-                  </span>
-                  <h3 className="text-3xl font-display mb-2">{project.title}</h3>
-                  <motion.span
-                    className="inline-flex items-center gap-2 text-sm font-medium"
-                    initial={{ opacity: 0, x: -10 }}
-                    whileHover={{ opacity: 1, x: 0 }}
-                  >
-                    View Project →
-                  </motion.span>
+              <Link
+                href={`/portfolio/${project.id}`}
+                className="project-card group relative overflow-hidden rounded-lg block"
+                data-cursor-text="View Project"
+              >
+                <div className="relative h-[500px] overflow-hidden">
+                  <motion.img
+                    src={project.image}
+                    alt={project.title}
+                    className="w-full h-full object-cover"
+                    whileHover={{ scale: 1.05 }}
+                    transition={{ duration: 0.3, ease: 'easeOut' }}
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-brown-900/80 via-brown-900/20 to-transparent" />
+                  <div className="absolute bottom-0 left-0 right-0 p-8 text-cream-50">
+                    <span className="text-sm text-gold-300 mb-2 block">
+                      {project.category}
+                    </span>
+                    <h3 className="text-3xl font-display mb-2">{project.title}</h3>
+                    <span className="inline-flex items-center gap-2 text-sm font-medium opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                      View Project →
+                    </span>
+                  </div>
                 </div>
-              </div>
-            </Link>
+              </Link>
+            </motion.div>
           ))}
         </div>
       </div>
     </section>
   )
 }
+
 

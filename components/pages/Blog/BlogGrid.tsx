@@ -1,15 +1,8 @@
 'use client'
 
-import { useEffect, useRef } from 'react'
 import { motion } from 'framer-motion'
-import { gsap } from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useInView } from 'react-intersection-observer'
 import Link from 'next/link'
-
-if (typeof window !== 'undefined') {
-  gsap.registerPlugin(ScrollTrigger)
-}
 
 const articles = [
   {
@@ -63,73 +56,56 @@ const articles = [
 ]
 
 export default function BlogGrid() {
-  const sectionRef = useRef<HTMLDivElement>(null)
   const { ref, inView } = useInView({ threshold: 0.1, triggerOnce: true })
-
-  useEffect(() => {
-    if (!sectionRef.current) return
-
-    const cards = sectionRef.current.querySelectorAll('.blog-card')
-    
-    cards.forEach((card, index) => {
-      gsap.from(card, {
-        opacity: 0,
-        y: 60,
-        duration: 0.8,
-        delay: index * 0.1,
-        scrollTrigger: {
-          trigger: card,
-          start: 'top 85%',
-          toggleActions: 'play none none none',
-        },
-      })
-    })
-  }, [])
 
   return (
     <section ref={ref} className="py-32 px-6 lg:px-8 bg-cream-50">
       <div className="max-w-7xl mx-auto">
-        <div
-          ref={sectionRef}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
-        >
-          {articles.map((article) => (
-            <Link
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {articles.map((article, index) => (
+            <motion.div
               key={article.id}
-              href={`/blog/${article.id}`}
-              className="blog-card group block"
-              data-cursor-text="Read"
+              initial={{ opacity: 0, y: 20 }}
+              animate={inView ? { opacity: 1, y: 0 } : { opacity: 1, y: 0 }}
+              transition={{ duration: 0.3, delay: index * 0.03, ease: 'easeOut' }}
             >
-              <div className="relative h-64 overflow-hidden rounded-lg mb-4">
-                <motion.img
-                  src={article.image}
-                  alt={article.title}
-                  className="w-full h-full object-cover"
-                  whileHover={{ scale: 1.05 }}
-                  transition={{ duration: 0.4 }}
-                />
-                <div className="absolute top-4 left-4">
-                  <span className="px-3 py-1 bg-cream-50 text-brown-800 text-xs font-medium rounded-full">
-                    {article.category}
-                  </span>
+              <Link
+                href={`/blog/${article.id}`}
+                className="group block"
+                data-cursor-text="Read"
+              >
+                <div className="relative h-64 overflow-hidden rounded-lg mb-4">
+                  <motion.img
+                    src={article.image}
+                    alt={article.title}
+                    className="w-full h-full object-cover"
+                    whileHover={{ scale: 1.05 }}
+                    transition={{ duration: 0.3, ease: 'easeOut' }}
+                  />
+                  <div className="absolute top-4 left-4">
+                    <span className="px-3 py-1 bg-cream-50 text-brown-800 text-xs font-medium rounded-full">
+                      {article.category}
+                    </span>
+                  </div>
                 </div>
-              </div>
-              <div className="p-4">
-                <span className="text-sm text-brown-500 mb-2 block">
-                  {article.date}
-                </span>
-                <h3 className="text-2xl font-display text-brown-800 mb-3 group-hover:text-gold-600 transition-colors">
-                  {article.title}
-                </h3>
-                <p className="text-brown-600 leading-relaxed">
-                  {article.excerpt}
-                </p>
-              </div>
-            </Link>
+                <div className="p-4">
+                  <span className="text-sm text-brown-500 mb-2 block">
+                    {article.date}
+                  </span>
+                  <h3 className="text-2xl font-display text-brown-800 mb-3 group-hover:text-gold-600 transition-colors">
+                    {article.title}
+                  </h3>
+                  <p className="text-brown-600 leading-relaxed">
+                    {article.excerpt}
+                  </p>
+                </div>
+              </Link>
+            </motion.div>
           ))}
         </div>
       </div>
     </section>
   )
 }
+
 
