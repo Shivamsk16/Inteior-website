@@ -7,7 +7,7 @@ const teamMembers = [
   {
     name: 'Saurabh Khandelwal',
     role: 'Creative Director/Color Specialist',
-    image: '/team/saurabh.jpg',
+    image: '/teams/saurabh.jpeg',
   },
   {
     name: 'Saloni Metha',

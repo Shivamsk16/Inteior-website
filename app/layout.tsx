@@ -5,6 +5,7 @@ import SmoothScroll from '@/components/SmoothScroll'
 import CustomCursor from '@/components/CustomCursor'
 import Navigation from '@/components/Navigation'
 import PageLoader from '@/components/PageLoader'
+import WhatsAppButton from '@/components/WhatsAppButton'
 
 const inter = Inter({ 
   subsets: ['latin'],
@@ -40,6 +41,7 @@ export default function RootLayout({
           <CustomCursor />
           <Navigation />
           {children}
+          <WhatsAppButton/>
         </SmoothScroll>
       </body>
     </html>

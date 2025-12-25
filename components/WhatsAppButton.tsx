@@ -2,6 +2,7 @@
 
 import { motion } from 'framer-motion'
 import { MessageCircle } from 'lucide-react'
+import Image from 'next/image'
 import { useEffect, useState } from 'react'
 
 export default function WhatsAppButton() {
@@ -46,7 +47,7 @@ export default function WhatsAppButton() {
         onClick={handleClick}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
-        className="group relative w-16 h-16 bg-[#25D366] rounded-full shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center"
+        className="group relative w-16 h-16 bg-white rounded-full shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center"
         aria-label="Contact us on WhatsApp"
         data-cursor-text="Chat"
       >
@@ -57,7 +58,8 @@ export default function WhatsAppButton() {
           }}
           transition={{ duration: 0.5 }}
         >
-          <MessageCircle className="w-8 h-8 text-white" fill="white" />
+          {/* <MessageCircle className="w-8 h-8 text-white" fill="white" /> */}
+          <Image width={1000} height={1000} src={"/whatsapp.png"} alt='whatsapp' className='w-8 h-8' />
         </motion.div>
 
         {/* Pulse animation ring */}

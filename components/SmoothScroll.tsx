@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useRef } from 'react'
-import Lenis from '@studio-freight/lenis'
+import Lenis from 'lenis';
 import { usePathname } from 'next/navigation'
 
 export default function SmoothScroll({ children }: { children: React.ReactNode }) {
@@ -10,8 +10,9 @@ export default function SmoothScroll({ children }: { children: React.ReactNode }
 
   useEffect(() => {
     // Check for reduced motion preference
+    if(typeof window === 'undefined') return
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-    const isMobile = window.innerWidth < 768 || 'ontouchstart' in window
+    const isMobile = 'ontouchstart' in window || navigator.maxTouchPoints > 0
     
     // Use native scroll on mobile or if user prefers reduced motion
     if (isMobile || prefersReducedMotion) {
@@ -19,12 +20,12 @@ export default function SmoothScroll({ children }: { children: React.ReactNode }
     }
 
     const lenis = new Lenis({
-      duration: 0.4, // Reduced from 1.2 to 0.4 for instant feel
-      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      duration: 0.8, // Reduced from 1.2 to 0.4 for instant feel
+      easing: (t) => t,
       smoothWheel: true,
       wheelMultiplier: 1,
       touchMultiplier: 1, // Reduced from 2
-      infinite: false,
+      
     })
 
     lenisRef.current = lenis
