@@ -37,7 +37,7 @@ export default function PageLoader() {
               animate={{ opacity: 1 }}
               transition={{ duration: 0.2 }}
             >
-              Studio
+              Studio 54
             </motion.div>
             <motion.div
               className="w-32 h-0.5 bg-brown-300 mx-auto"

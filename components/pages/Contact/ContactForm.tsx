@@ -55,8 +55,8 @@ export default function ContactForm() {
                 </div>
                 <div>
                   <h3 className="font-semibold text-brown-800 mb-1">Email</h3>
-                  <a href="mailto:hello@studio.com" className="text-brown-600 hover:text-brown-800">
-                    hello@studio.com
+                  <a href="mailto:hello@studio54.com" className="text-brown-600 hover:text-brown-800">
+                    hello@studio54.com
                   </a>
                 </div>
               </div>
@@ -67,8 +67,11 @@ export default function ContactForm() {
                 </div>
                 <div>
                   <h3 className="font-semibold text-brown-800 mb-1">Phone</h3>
-                  <a href="tel:+1234567890" className="text-brown-600 hover:text-brown-800">
-                    +1 (234) 567-890
+                  <a href="tel:+919251004513" className="text-brown-600 hover:text-brown-800">
+                    +91 9251004513
+                  </a><br></br>
+                   <a href="tel:+918619069462" className="text-brown-600 hover:text-brown-800">
+                    +91 8619069462
                   </a>
                 </div>
               </div>
@@ -169,6 +172,7 @@ export default function ContactForm() {
     </section>
   )
 }
+
 
 
 

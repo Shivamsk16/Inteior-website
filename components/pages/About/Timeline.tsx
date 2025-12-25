@@ -5,25 +5,25 @@ import { useInView } from 'react-intersection-observer'
 
 const milestones = [
   {
-    year: '2010',
+    year: '2021',
     title: 'Foundation',
-    description: 'Studio was founded with a vision to transform spaces into works of art.',
+    description: 'Studio 54 was founded with a vision to transform spaces into works of art.',
   },
   {
-    year: '2015',
+    year: '2022',
     title: 'Expansion',
     description: 'Expanded our team and opened our flagship design studio.',
   },
-  {
-    year: '2018',
-    title: 'Recognition',
-    description: 'Received the prestigious Interior Design Excellence Award.',
-  },
-  {
-    year: '2023',
-    title: 'Innovation',
-    description: 'Launched sustainable design initiatives and 3D visualization services.',
-  },
+  // {
+  //   year: '2018',
+  //   title: 'Recognition',
+  //   description: 'Received the prestigious Interior Design Excellence Award.',
+  // },
+  // {
+  //   year: '2023',
+  //   title: 'Innovation',
+  //   description: 'Launched sustainable design initiatives and 3D visualization services.',
+  // },
 ]
 
 export default function Timeline() {

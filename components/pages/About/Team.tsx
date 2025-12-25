@@ -5,25 +5,16 @@ import { useInView } from 'react-intersection-observer'
 
 const teamMembers = [
   {
-    name: 'Alexandra Morgan',
-    role: 'Creative Director',
-    image: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400',
+    name: 'Saurabh Khandelwal',
+    role: 'Creative Director/Color Specialist',
+    image: '/team/saurabh.jpg',
   },
   {
-    name: 'James Chen',
-    role: 'Senior Designer',
+    name: 'Saloni Metha',
+    role: 'Senior Designer/Project Manager',
     image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400',
   },
-  {
-    name: 'Sophie Laurent',
-    role: 'Color Specialist',
-    image: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400',
-  },
-  {
-    name: 'Marcus Thompson',
-    role: 'Project Manager',
-    image: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400',
-  },
+  
 ]
 
 export default function Team() {
@@ -41,7 +32,7 @@ export default function Team() {
           Meet Our Team
         </motion.h2>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8">
           {teamMembers.map((member, index) => (
             <motion.div
               key={member.name}
@@ -72,6 +63,8 @@ export default function Team() {
     </section>
   )
 }
+
+
 
 
 

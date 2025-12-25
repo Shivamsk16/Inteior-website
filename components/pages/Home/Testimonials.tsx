@@ -6,7 +6,7 @@ import { useInView } from 'react-intersection-observer'
 const testimonials = [
   {
     id: 1,
-    quote: 'Working with Studio transformed our home beyond our expectations. Every detail was thoughtfully considered.',
+    quote: 'Working with Studio 54 transformed our home beyond our expectations. Every detail was thoughtfully considered.',
     author: 'Sarah Johnson',
     role: 'Homeowner',
   },

@@ -23,7 +23,7 @@ const cormorant = Cormorant_Garamond({
 })
 
 export const metadata: Metadata = {
-  title: 'Luxury Interior Design | Premium Design Studio',
+  title: 'Studio 54 | Interior Design Studio',
   description: 'Transform your space with our premium interior design services. Luxury, elegance, and modern sophistication.',
 }
 
